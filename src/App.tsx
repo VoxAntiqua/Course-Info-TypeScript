@@ -24,7 +24,16 @@ const App = () => {
     kind: 'background';
   }
 
-  type CoursePart = CoursePartBasic | CoursePartGroup | CoursePartBackground;
+  interface CoursePartSpecial extends CoursePartDescription {
+    requirements: string[];
+    kind: 'special';
+  }
+
+  type CoursePart =
+    | CoursePartBasic
+    | CoursePartGroup
+    | CoursePartBackground
+    | CoursePartSpecial;
 
   const courseParts: CoursePart[] = [
     {
@@ -58,6 +67,13 @@ const App = () => {
       exerciseCount: 10,
       description: 'a hard part',
       kind: 'basic',
+    },
+    {
+      name: 'Backend development',
+      exerciseCount: 21,
+      description: 'Typing the backend',
+      requirements: ['nodejs', 'jest'],
+      kind: 'special',
     },
   ];
 
@@ -121,7 +137,21 @@ const App = () => {
               {props.part.name} {props.part.exerciseCount}
             </b>
             <br />
+            <em>{props.part.description}</em>
+            <br />
             background reading: {props.part.backgroundMaterial}
+          </p>
+        );
+      case 'special':
+        return (
+          <p>
+            <b>
+              {props.part.name} {props.part.exerciseCount}
+            </b>
+            <br />
+            <em>{props.part.description}</em>
+            <br />
+            required skills: {props.part.requirements.join(', ')}
           </p>
         );
       default:
